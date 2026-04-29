@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "geomemo"
+version = "0.1.0"
+description = "GeoMemo is a local SQLite web app for marking visited administrative areas on a political map."
+authors = ["Vincenzo Ventriglia"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"

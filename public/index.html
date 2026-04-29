@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GeoMemo</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQKjPSE4xZ0BHHYhuP8xz/3yOHBkb6E="
+      crossorigin=""
+    >
+    <link rel="stylesheet" href="/styles.css?v=9">
+  </head>
+  <body>
+    <main id="map" aria-label="Geographic map"></main>
+    <div class="map-theme-toggle" role="group" aria-label="Color mode">
+      <button class="map-theme-toggle__button is-active" type="button" data-theme="day" aria-label="Day mode" title="Day mode">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+      </button>
+      <button class="map-theme-toggle__button" type="button" data-theme="night" aria-label="Night mode" title="Night mode">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.2A7.8 7.8 0 0 1 9.8 4 8 8 0 1 0 20 14.2Z"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="map-zoom-controls" role="group" aria-label="Map zoom">
+      <button class="map-zoom-controls__button" type="button" data-zoom="in" aria-label="Zoom in" title="Zoom in">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14"></path>
+          <path d="M5 12h14"></path>
+        </svg>
+      </button>
+      <button class="map-zoom-controls__button" type="button" data-zoom="out" aria-label="Zoom out" title="Zoom out">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14"></path>
+        </svg>
+      </button>
+      <button class="map-zoom-controls__button" type="button" data-zoom="home" aria-label="Default view" title="Default view">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m3 10.5 9-7 9 7"></path>
+          <path d="M5 9.5V21h14V9.5"></path>
+          <path d="M9 21v-7h6v7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <aside class="panel" aria-label="GeoMemo places">
+      <header class="panel__header">
+        <div>
+          <p class="eyebrow">GeoMemo</p>
+          <h1>Visited places</h1>
+        </div>
+        <p id="placeCount" class="counter">0</p>
+      </header>
+
+      <section class="selection">
+        <p class="section-label">Selection</p>
+        <div class="level-picker" role="group" aria-label="Geographic level">
+          <button class="level-picker__button" type="button" data-level="country">Country</button>
+          <button class="level-picker__button is-active" type="button" data-level="region">Region</button>
+          <button class="level-picker__button" type="button" data-level="province">Province</button>
+          <button class="level-picker__button" type="button" data-level="city">City</button>
+        </div>
+        <h2 id="selectedTitle">No selection</h2>
+        <dl id="selectedDetails" class="details"></dl>
+        <label class="notes">
+          <span>Note</span>
+          <textarea id="notes" rows="4" placeholder="Memories, dates, people, anything worth remembering..."></textarea>
+        </label>
+        <div class="actions">
+          <button id="savePlace" class="button button--primary" disabled>Save</button>
+          <button id="clearSelection" class="button" disabled>Cancel</button>
+        </div>
+        <p id="status" class="status" role="status"></p>
+      </section>
+
+      <section class="visited">
+        <p class="section-label">Saved</p>
+        <div id="placesList" class="places"></div>
+      </section>
+    </aside>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="/app.js?v=12"></script>
+  </body>
+</html>
