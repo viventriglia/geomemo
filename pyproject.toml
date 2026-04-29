@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "geomemo"
 version = "0.1.0"
-description = "GeoMemo is a local SQLite web app for marking visited administrative areas on a political map."
+description = "GeoMemo is a local SQLite web app for marking visited areas on a map."
 authors = ["Vincenzo Ventriglia"]
 readme = "README.md"
 
