@@ -89,6 +89,7 @@ let selectedLevel = "region";
 let savedPlaces = [];
 let layerById = new Map();
 let activeTileLayer = null;
+let cartoApiKey = "";
 
 function preferredTheme() {
   const savedTheme = localStorage.getItem("geomemo-theme");
@@ -114,7 +115,12 @@ function setTheme(theme) {
   if (activeTileLayer) {
     activeTileLayer.remove();
   }
-  activeTileLayer = L.tileLayer(tileTheme.url, tileTheme.options).addTo(map);
+  if (!cartoApiKey) {
+    activeTileLayer = null;
+    return;
+  }
+  const tileUrl = `${tileTheme.url}?key=${encodeURIComponent(cartoApiKey)}`;
+  activeTileLayer = L.tileLayer(tileUrl, tileTheme.options).addTo(map);
 }
 
 function setStatus(message, isError = false) {
@@ -470,10 +476,19 @@ placesList.addEventListener("click", async (event) => {
   }
 });
 
-loadPlaces().catch((error) => {
+async function initialize() {
+  const config = await requestJson("/api/config");
+  cartoApiKey = config.cartoApiKey || "";
+  setTheme(preferredTheme());
+  if (!cartoApiKey) {
+    setStatus("CARTO_API_KEY is missing. Add it to .env and restart GeoMemo.", true);
+  }
+  await loadPlaces();
+}
+
+initialize().catch((error) => {
   setStatus(error.message, true);
 });
 
-setTheme(preferredTheme());
 window.addEventListener("resize", applyWorldConstraints);
 applyWorldConstraints();

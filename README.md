@@ -26,6 +26,20 @@ poetry lock
 poetry install --sync
 ```
 
+Create `.env` from the template and add the CARTO Basemaps API key:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+```dotenv
+CARTO_API_KEY=your_key_here
+```
+
+GeoMemo reads `.env` when it starts, so restart the server after changing the
+key. The file is ignored by Git. The key is necessarily visible to the browser
+because CARTO requires it in the raster tile URL.
+
 ## Run
 
 ```powershell

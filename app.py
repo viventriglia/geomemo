@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+import os
 import sqlite3
 import sys
 import urllib.error
@@ -19,6 +20,30 @@ BASE_DIR = Path(__file__).resolve().parent
 PUBLIC_DIR = BASE_DIR / "public"
 DATA_DIR = BASE_DIR / "data"
 DB_PATH = DATA_DIR / "visited.sqlite3"
+
+
+def load_local_env(path: Path) -> dict[str, str]:
+    """Read simple KEY=VALUE entries without adding a runtime dependency."""
+    if not path.is_file():
+        return {}
+
+    values: dict[str, str] = {}
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            value = value[1:-1]
+        if key:
+            values[key] = value
+    return values
+
+
+LOCAL_ENV = load_local_env(BASE_DIR / ".env")
+CARTO_API_KEY = os.environ.get("CARTO_API_KEY", LOCAL_ENV.get("CARTO_API_KEY", "")).strip()
 
 AREA_LEVELS = {
     "country": {"label": "Country", "zoom": 3},
@@ -325,6 +350,9 @@ class AppHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == "/api/config":
+            self.send_json(200, {"cartoApiKey": CARTO_API_KEY})
+            return
         if parsed.path == "/api/places":
             self.handle_list_places()
             return
